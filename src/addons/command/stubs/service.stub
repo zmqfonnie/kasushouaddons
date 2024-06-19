@@ -1,0 +1,34 @@
+<?php
+// +----------------------------------------------------------------------
+// | 卡速售
+// +----------------------------------------------------------------------
+// | Copyright (c) 2022~2027 https://www.kasushou.com All rights reserved.
+// +----------------------------------------------------------------------
+// | Author: 卡速售
+// +----------------------------------------------------------------------
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+class {%className%} extends \think\Service
+{
+    /**
+     * 注册服务
+     *
+     * @return mixed
+     */
+    public function register()
+    {
+    	//
+    }
+
+    /**
+     * 执行服务
+     *
+     * @return mixed
+     */
+    public function boot()
+    {
+        //
+    }
+}

@@ -1,0 +1,168 @@
+<?php
+// +----------------------------------------------------------------------
+// | 卡速售
+// +----------------------------------------------------------------------
+// | Copyright (c) 2022~2027 https://www.kasushou.com All rights reserved.
+// +----------------------------------------------------------------------
+// | Author: 卡速售
+// +----------------------------------------------------------------------
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use kss\base\BaseLogic;
+use kss\form\Build;
+use kss\form\CommonRule;
+
+class {%className%} extends BaseLogic
+{
+
+    protected function setModel(): string
+    {
+          return \app\common\model\{%class_name%}::class;
+    }
+
+
+    
+    public function createForm($post)
+    {
+        $id = $post['id'] ?? 0;
+        $d = $this->getOne($id);
+        $f = [];
+
+//        $list = [
+//            'card_no_alias' => [
+//                'name' => 'card_no_alias',
+//                'type' => 'input',
+//                'info' => '卡号别名',
+//                'desc' => '',
+//                'value' => $d['card_no_alias'] ?? '',
+//            ],
+//            'card_password_alias' => [
+//                'name' => 'card_password_alias',
+//                'type' => 'input',
+//                'info' => '卡密别名',
+//                'desc' => '',
+//                'value' => $d['card_password_alias'] ?? '',
+//            ]
+//        ];
+//        $f[] = buildForm(
+//            [
+//                'name' => 'card_type',
+//                'type' => 'radio',
+//                'info' => '卡密类型',
+//                'desc' => '',
+//                'value' => $d['card_type'] ?? 1,
+//                'parameter' => [
+//                    [
+//                        'label' => '卡密',
+//                        'value' => 1,
+//                    ],
+//                    [
+//                        'label' => '卡密+卡号',
+//                        'value' => 2,
+//                    ],
+//                ],
+//                'son_names' => [
+//                    [
+//                        'value' => 1,
+//                        'componentsModel' => 'card_no_alias'
+//                    ],
+//                    [
+//                        'value' => 2,
+//                        'componentsModel' => 'card_no_alias,card_password_alias'
+//                    ]
+//                ]
+//            ], $list);
+
+
+        $list = [
+            [
+                'name' => 'id',
+                'type' => 'hidden',
+                'value' => $d['id'] ?? 0,
+            ],
+            [
+                'name' => 'pid',
+                'type' => 'cascader',
+                'info' => '一级分类',
+                'value' => [$d['pid'] ?? 0],
+                'placeholder' => '作为一级分类',
+                'parameter' => $this->getIndexTree([
+                    ['pid', '=', 0]
+                ], 'id value,name label,pid', 'id desc', 'value'),
+            ],
+            [
+                'name' => 'name',
+                'type' => 'input',
+                'info' => '分类名称',
+                'value' => $d['name'] ?? '',
+                'col' => 12,
+                'required' => true,
+            ],
+            [
+                'name' => 'ishot',
+                'type' => 'checkbox',
+                'info' => '推荐目录',
+                'value' => $d['ishot'] ?? [],
+                'col' => 6,
+                'parameter' => [
+                    ['label' => '推荐', 'value' => 1],
+                ]
+            ],
+            [
+                'name' => 'color',
+                'type' => 'color',
+                'info' => '颜色',
+                'value' => $d['color'] ?? '#000',
+                'col' => 6,
+            ],
+            [
+                'name' => 'img',
+                'type' => 'upload',
+                'info' => 'PC图片',
+                'value' => $d['img'] ?? '',
+                'desc' => '电脑端分类图片300*300',
+                'col' => 12,
+            ],
+            [
+                'name' => 'img2',
+                'type' => 'upload',
+                'info' => 'H5图片',
+                'value' => $d['img2'] ?? '',
+                'desc' => '手机端分类图片100*100',
+                'col' => 12,
+            ],
+            [
+                'name' => 'info',
+                'type' => 'textarea',
+                'info' => '分类简介',
+                'value' => $d['info'] ?? '',
+
+            ],
+
+
+//            [
+//                'name' => 'sort',
+//                'type' => 'input',
+//                'info' => '排序',
+//                'value' => $d['sort'] ?? 0,
+//            ],
+//            [
+//                'name' => 'status',
+//                'type' => 'radio',
+//                'info' => '状态',
+//                'value' => $d['status'] ?? 1,
+//            ]
+
+        ];
+
+        foreach ($list as $data) {
+            $item = buildForm($data);
+
+            $f[] = $item;
+        }
+        return create_form($d ? '编辑分类' : '添加分类', $f, '/category/save');
+
+    }
+}

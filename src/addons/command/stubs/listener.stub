@@ -1,0 +1,27 @@
+<?php
+// +----------------------------------------------------------------------
+// | 卡速售
+// +----------------------------------------------------------------------
+// | Copyright (c) 2022~2027 https://www.kasushou.com All rights reserved.
+// +----------------------------------------------------------------------
+// | Author: 卡速售
+// +----------------------------------------------------------------------
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use kss\base\BaseListener;
+use think\facade\Log;
+
+class {%className%} implements BaseListener
+{
+        /**
+        * 事件监听处理
+        * @param $event
+        * @return mixed
+        */
+       public function handle($event): void
+       {
+           Log::error('test');
+       }
+}
