@@ -10,7 +10,7 @@ use think\facade\App;
 use think\facade\Config;
 use think\facade\Event;
 use think\facade\Route;
-use think\facade\Cache;
+use kss\util\Cache;
 use think\helper\{
     Str, Arr
 };
@@ -144,6 +144,7 @@ if (!function_exists('addons_route_autoload')) {
      */
     function addons_route_autoload()
     {
+//        clog([], 'addons_route_autoload');
         // 路由脚本
         $execute = '\\kasushou\\addons\\Route::execute';
         // 注册控制器路由
@@ -187,7 +188,7 @@ if (!function_exists('addons_route_autoload')) {
             if (is_file($addon_path . 'middleware.php')) {
                 app()->middleware->import(include $addon_path . 'middleware.php', 'route');
             }
-            
+
             //找到插件方法
             $common_file = $addon_path . 'common.php';
             if (is_file($common_file)) {
@@ -427,6 +428,43 @@ if (!function_exists('get_addons_list')) {
             Cache::set('addonslist', $list);
         } else {
             $list = Cache::get('addonslist');
+        }
+        return $list;
+    }
+}
+
+
+/**
+ * 获得模板列表
+ * @return array
+ */
+if (!function_exists('get_template_list')) {
+
+    function get_template_list()
+    {
+        if (!Cache::get('templatelist')) {
+            $addons_path = app()->getRootPath() . 'template' . DS; // 模板列表
+            $results = scandir($addons_path);
+            $list = [];
+            foreach ($results as $name) {
+                if ($name === '.' or $name === '..')
+                    continue;
+                if (is_file($addons_path . $name))
+                    continue;
+                $addonDir = $addons_path . $name . DS;
+                if (!is_dir($addonDir))
+                    continue;
+                if (!is_file($addonDir . 'Plugin' . '.php'))
+                    continue;
+                $info = get_addons_info($name);
+                if (!isset($info['name']))
+                    continue;
+                $info['url'] = isset($info['url']) && $info['url'] ? (string)addons_url($info['url']) : '';
+                $list[$name] = $info;
+            }
+            Cache::set('templatelist', $list);
+        } else {
+            $list = Cache::get('templatelist');
         }
         return $list;
     }

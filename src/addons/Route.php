@@ -33,6 +33,9 @@ class Route
         // 是否自动转换控制器和操作名
         $convert = $addonsRouteConfig['url_convert']??Config::get('route.url_convert');
         $filter = $convert ? 'strtolower' : 'trim';
+        if(is_array($addon)){
+            throw new HttpException(500, lang('addon can not be empty'));
+        }
         $addon = $addon ? trim(call_user_func($filter, $addon)) : '';
         $controller = $controller ? trim(call_user_func($filter, $controller)) :$app->route->config('default_action');
         $action = $action ? trim(call_user_func($filter, $action)) : $app->route->config('default_action');

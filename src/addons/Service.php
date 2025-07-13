@@ -14,7 +14,7 @@ use think\Route;
 use think\helper\Str;
 use think\facade\Config;
 use think\facade\Lang;
-use think\facade\Cache;
+use kss\util\Cache;
 use think\facade\Event;
 use kasushou\addons\middleware\Addons;
 use RecursiveDirectoryIterator;
@@ -44,7 +44,6 @@ class Service extends \think\Service
 
         // 无则创建addons目录
         $this->addons_path = $this->getAddonsPath();
-
 
         $this->autoload();
         // 加载系统语言包
@@ -384,7 +383,6 @@ class Service extends \think\Service
         $sourceAssetsDir = Service::getSourceAssetsDir($name);
         $destAssetsDir = Service::getDestAssetsDir($name);
 
-//        clog1($sourceAssetsDir,$destAssetsDir);
         if (is_dir($sourceAssetsDir)) {
             FileHelper::copyDir($sourceAssetsDir, $destAssetsDir, $delete);
             if ($delete) FileHelper::delDir($sourceAssetsDir);
